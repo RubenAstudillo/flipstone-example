@@ -1,0 +1,68 @@
+<doctype html>
+<html>
+<head>
+    <meta charset="utf-8" 
+    <title>Calculator</title>
+
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <script type="text/javascript" src="./script.js"></script>
+</head>
+<body>
+    <p></p>
+    <table>
+        <tr>
+            <td>
+                <output id="output_panel">0</output>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>AC</td>
+            <td>±</td>
+            <td>%</td>
+            <td><input type="button" id="division" value="÷"
+                        onclick="setOperand(this.id)"></td>
+        </tr>
+        <tr>
+            <td><input type="button" id="7" value=7
+                        onclick="addDigit(7)"></td>
+            <td><input type="button" id="8" value=8
+                        onclick="addDigit(8)"></td>
+            <td><input type="button" id="9" value=9
+                        onclick="addDigit(9)"></td>
+            <td><input type="button" id="multiplication" value="✕"
+                        onclick="setOperand(this.id)"></td>
+        </tr>
+        <tr>
+            <td><input type="button" id="4" value=4
+                        onclick="addDigit(4)"></td>
+            <td><input type="button" id="5" value=5
+                        onclick="addDigit(5)"></td>
+            <td><input type="button" id="6" value=6
+                        onclick="addDigit(6)"></td>
+            <td><input type="button" id="minus" value="-"
+                        onclick="setOperand(this.id)"></td>
+        </tr>
+        <tr>
+            <td><input type="button" id="1" value="1"
+                        onclick="addDigit(1)"></td>
+            <td><input type="button" id="2" value=2
+                        onclick="addDigit(2)"></td>
+            <td><input type="button" id="3" value=3
+                        onclick="addDigit(3)"></td>
+            <td><input type="button" id="sum" value="+"
+                        onclick="setOperand(this.id)"></td>
+        </tr>
+        <tr>
+            <td><input type="button" id="0" value=0
+                        onclick="addDigit(0)"></td>
+            <td></td>
+            <td><input type="button" id="dot" value="."
+                        onclick="setDecimal()"></td>
+            <td><input type="button" id="result" value="="
+                        onclick="calculate()"></td>
+        </tr>
+    </table>
+</body>
+</html>
