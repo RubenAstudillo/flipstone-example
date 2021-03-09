@@ -10,7 +10,8 @@ const def_op = {
 };
 
 function num_constructor(a) {
-    return {kind: "num", value: a, order: 0, setting_decimal: false};
+    return {kind: "num", value: a, order: 0,
+            setting_decimal: false, is_default: false};
 }
 function zero() { return num_constructor(0); }
 
@@ -73,23 +74,42 @@ function optimisticEval() {
     if (len >= 3 && stack[len - 1].kind == "op"
         && stack[len - 2].kind == "num"
         && stack[len - 3].kind == "num") {
-        const op = stack.pop().fun;
-        const b = stack.pop().value;
-        const a = stack.pop().value;
-        const res = op(a,b);
-        pushNumber(num_constructor(res));
+        const op = stack.pop();
+        const b = stack.pop();
+        const a = stack.pop();
+        const res = operateOn(op,a,b);
+        pushNumber(res);
         return [true, res];
     } else {
         return [false];
     }
 }
 
+function operateOn(op, a, b) {
+    if (op.name == "div" && b.value == 0) {
+        return {kind: "num", value: "Undefined!"};
+    }
+    const op1 = op.fun;
+    const b1 = b.value;
+    const a1 = a.value;
+    const res = op1(a1,b1);
+    if (res >= 10**10) {
+        return {kind: "num", value: "Overflow!"};
+    } else {
+        return num_constructor(res);
+    }
+}
+
 function setOperand(op) {
-    pushNumber(cur_value);
-    pushOperator(op);
-    const evalRes = optimisticEval();
-    if (evalRes[0]) {
-        showValue(evalRes[1]);
+    if (cur_value.is_default == false) {
+        pushNumber(cur_value);
+        pushOperator(op);
+        const evalRes = optimisticEval();
+        if (evalRes[0]) {
+            showValue(evalRes[1].value);
+        }
+    } else {
+        pushOperator(op);
     }
     cur_value = zero();
 }
@@ -102,21 +122,18 @@ function calculate() {
         if (val.kind == "num") {
             stack.push(val);
         } else {
-            const b = stack.pop().value;
-            const a = stack.pop().value;
-            const fun = val.fun;
-            const res = num_constructor(fun(a,b));
+            const b = stack.pop();
+            const a = stack.pop();
+            const fun = val;
+            const res = operateOn(fun,a,b);
             stack.push(res);
         }
     }
     const finalres = stack.pop();
     stack = [ finalres ];
+    op_stack = [];
     showValue(finalres.value);
+    cur_value = zero();
+    cur_value.is_default = true;
 }
-
-// setDecimal();
-// addDigit(8);
-// addDigit(3);
-// negate();
-// addDigit(9);
 
